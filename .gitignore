@@ -1,0 +1,39 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+*.py[cod]
+*.pyo
+build/
+dist/
+wheels/
+*.egg-info
+
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+.env
+
+# Package managers
+*.egg-info/
+dist/
+build/
+
+# IDE / editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Data (raw & generated)
+data/raw/*.csv
+data/processed/
+data/features/
+
+# Logs
+*.logs
