@@ -79,11 +79,15 @@ name = "industrial-anomaly-detection"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+<<<<<<< HEAD
     { name = "matplotlib" },
+=======
+>>>>>>> b91f03fe4b147d081bcad8252d50c8a3fda9d83c
     { name = "pandas" },
 ]
 
 [package.metadata]
+<<<<<<< HEAD
 requires-dist = [
     { name = "matplotlib", specifier = ">=3.10.9" },
     { name = "pandas", specifier = ">=3.0.2" },
@@ -159,6 +163,9 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/61/1c/d21bfeb9931881ebe96bcfcff27c7ae4b160ae0ec291a714c42641a56d75/matplotlib-3.10.9-cp314-cp314t-win_amd64.whl", hash = "sha256:c27df8b3848f32a83d1767566595e43cfaa4460380974da06f4279a7ec143c39", size = 8432333, upload-time = "2026-04-24T00:13:51.008Z" },
     { url = "https://files.pythonhosted.org/packages/78/23/92493c3e6e1b635ccfff146f7b99e674808787915420373ac399283764c2/matplotlib-3.10.9-cp314-cp314t-win_arm64.whl", hash = "sha256:a49f1eadc84ca85fd72fa4e89e70e61bf86452df6f971af04b12c60761a0772c", size = 8324785, upload-time = "2026-04-24T00:13:53.633Z" },
 ]
+=======
+requires-dist = [{ name = "pandas", specifier = ">=3.0.2" }]
+>>>>>>> b91f03fe4b147d081bcad8252d50c8a3fda9d83c
 
 [[package]]
 name = "numpy"
@@ -190,6 +197,7 @@ wheels = [
 ]
 
 [[package]]
+<<<<<<< HEAD
 name = "packaging"
 version = "26.2"
 source = { registry = "https://pypi.org/simple" }
@@ -199,6 +207,8 @@ wheels = [
 ]
 
 [[package]]
+=======
+>>>>>>> b91f03fe4b147d081bcad8252d50c8a3fda9d83c
 name = "pandas"
 version = "3.0.2"
 source = { registry = "https://pypi.org/simple" }
@@ -228,6 +238,7 @@ wheels = [
 ]
 
 [[package]]
+<<<<<<< HEAD
 name = "pillow"
 version = "12.2.0"
 source = { registry = "https://pypi.org/simple" }
@@ -270,6 +281,8 @@ wheels = [
 ]
 
 [[package]]
+=======
+>>>>>>> b91f03fe4b147d081bcad8252d50c8a3fda9d83c
 name = "python-dateutil"
 version = "2.9.0.post0"
 source = { registry = "https://pypi.org/simple" }
