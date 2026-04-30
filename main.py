@@ -1,47 +1,49 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
+
 
 def main(): 
+    cols = ["timestamp", "Oil_temperature", "Motor_current"]
     df = pd.read_csv(   # ograniczam do dwóch parametrów + timestamp 
         "data/raw/MetroPT3(AirCompressor).csv",
-        usecols=["timestamp", "Oil_temperature", "Motor_current"]
+        usecols=cols,
+        parse_dates=["timestamp"]
     )
+    df = df.sort_values("timestamp").reset_index(drop=True) #sortowanie wg czasu
 
-    df["timestamp"] = pd.to_datetime(df["timestamp"])
+    df_base = df[                           # wycięcie timestamp -> 01.02 - 11.03 
+    (df["timestamp"] >= "2020-02-01") &
+    (df["timestamp"] <= "2020-03-05")
+    ].copy()
+   
+    time_diff = df_base["timestamp"].diff()
 
-    df = df[    # ograniczam zakres dat -> wg dokumentacji cały miesiąc czysty 
-        (df["timestamp"] >= "2020-02-01") &
-        (df["timestamp"] <= "2020-03-01")
-    ]
-    df = df.sort_values('timestamp').reset_index(drop=True)  #sortowanie 
-    df['dt'] = df['timestamp'].diff().dt.total_seconds()
-    print(df[['Motor_current', 'Oil_temperature']].describe()) #sprawdzam czy są błędy pomiarowe 
+    df_base["new_segment"] = time_diff > pd.Timedelta("1 hour")
+    df_base["segment_id"] = df_base["new_segment"].cumsum()
 
-    #sprawdzanie czy nie ma dziur w timestamp
-    df['timestamp'] = pd.to_datetime(df['timestamp'])   # sprawdzenie formatu
-    df = df.sort_values('timestamp').reset_index(drop=True) # sortowane
-    df['dt'] = df['timestamp'].diff().dt.total_seconds()    # różnice czasowe pomiędzy próbkami
-  
+    print(df_base[['Motor_current', 'Oil_temperature']].describe().round(3)) #sprawdzam czy są błędy pomiarowe 
 
-    print('Różnice czasowe:')
-    print(df['dt'].describe())
+    scaler = StandardScaler()
 
-#   Wizualizacja - szukam odchyłek do wycięcia    
-    # plt.figure(figsize=(14, 4))
-    # plt.plot(df['timestamp'], df['Motor_current'], label='Motor current')
-    # plt.legend()
-    # plt.show()
-    plt.figure(figsize=(14, 4))
-    plt.plot(df['timestamp'], df['Oil_temperature'], label='Oil_temperature')
-    plt.legend()
+    df_base[["Oil_temperature", "Motor_current"]] = scaler.fit_transform(
+    df_base[["Oil_temperature", "Motor_current"]]
+    )
+    print(df_base[['Motor_current', 'Oil_temperature']].describe().round(3)) #sprawdzam czy są błędy pomiarowe 
+
+    fig, axes = plt.subplots(2, 1, figsize=(16, 6), sharex=True)
+
+    axes[0].plot(df_base["timestamp"], df_base["Oil_temperature"], linewidth=0.5)
+    axes[0].set_title("Oil Temperature")
+    axes[0].set_ylabel("Oil Temperature")
+
+    axes[1].plot(df_base["timestamp"], df_base["Motor_current"], linewidth=0.5)
+    axes[1].set_title("Motor Current")
+    axes[1].set_ylabel("Motor Current")
+    axes[1].set_xlabel("Time")
+
+    plt.tight_layout()
     plt.show()
-
-    df_clean = df.copy() 
-    df_clean['is_off'] = df_clean['Motor_current'] < 0.5    # silnik off
-    df_clean['is_cold_start'] = df_clean['Oil_temperature'] < 35    # zimny olej
-    print(df_clean[['is_off', 'is_cold_start']].mean())
-
-
 
 if __name__ == "__main__":
     main()
